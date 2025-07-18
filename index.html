@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro de Produto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #resultado {
+      margin-top: 20px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cadastro de Produto</h1>
+
+  <form id="productForm">
+    <label>Nome:</label><br />
+    <input type="text" id="nome" required /><br />
+
+    <label>Preço:</label><br />
+    <input type="number" id="preco" required step="0.01" /><br />
+
+    <label>Imagem:</label><br />
+    <input type="file" id="imagem" accept="image/*" required /><br />
+
+    <button type="submit" class="btn btn-success">Cadastrar Produto</button>
+    <div id="mensagem" style="margin-top: 10px; font-weight: bold;"></div>
+  </form>
+
+  <div id="resultado"></div>
+
+  <script>
+    const form = document.getElementById('productForm');
+  
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const nome = document.getElementById('nome').value;
+      const preco = parseFloat(document.getElementById('preco').value);
+      const imagemInput = document.getElementById('imagem');
+      const mensagemDiv = document.getElementById('mensagem');
+  
+      if (!imagemInput.files.length) {
+        mensagemDiv.textContent = 'Selecione uma imagem.';
+        mensagemDiv.style.color = 'red';
+        return;
+      }
+  
+      const file = imagemInput.files[0];
+      const reader = new FileReader();
+  
+      reader.onloadend = async () => {
+        const imagemBase64 = reader.result;
+  
+        try {
+          const resposta = await fetch('https://n53brnbd3g.execute-api.us-east-1.amazonaws.com/dev/produtos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nome, preco, imagem: imagemBase64 })
+          });
+  
+          const dados = await resposta.json();
+  
+          if (resposta.ok) {
+            mensagemDiv.textContent = `Produto cadastrado com sucesso! ID: ${dados.product_id}`;
+            mensagemDiv.style.color = 'green';
+            form.reset(); // ← limpa o formulário
+          } else {
+            mensagemDiv.textContent = `Erro: ${dados.error || 'Falha desconhecida.'}`;
+            mensagemDiv.style.color = 'red';
+          }
+        } catch (erro) {
+          mensagemDiv.textContent = `Erro de rede: ${erro.message}`;
+          mensagemDiv.style.color = 'red';
+        }
+      };
+  
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
