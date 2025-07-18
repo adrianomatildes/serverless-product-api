@@ -1,4 +1,5 @@
-name: Deploy stack via Makefile
+name: ${{ github.event.inputs.command || 'deploy' }} workflow (DESTROY_AFTER=${{ github.event.inputs.destroy_after || 'false' }})
+
 
 on:
   workflow_dispatch:
