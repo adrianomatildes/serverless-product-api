@@ -1,5 +1,4 @@
-name: ${{ github.event.inputs.command || 'deploy' }} workflow (DESTROY_AFTER=${{ github.event.inputs.destroy_after || 'false' }})
-
+name: Deploy stack via Makefile
 
 on:
   workflow_dispatch:
@@ -15,6 +14,7 @@ on:
 
 jobs:
   deploy:
+    name: Deploy via Makefile
     runs-on: ubuntu-latest
 
     env:
@@ -41,8 +41,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: ⚙️ Executar Makefile (${{ github.event.inputs.make_target }})
-        run: make ${{ github.event.inputs.make_target }}
+      - name: ⚙️ Executar Makefile
+        run: |
+          echo "Executando Makefile com comando: ${{ github.event.inputs.make_target }}"
+          make ${{ github.event.inputs.make_target }}
+
 
       - name: 🧹 Destruir ambiente de teste (se ativado)
         if: ${{ github.event.inputs.DESTROY_AFTER == 'true' }}
