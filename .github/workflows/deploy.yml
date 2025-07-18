@@ -32,6 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 📦 Instalar zip (caso necessário)
+        if: ${{ github.event.inputs.make_target != 'destroy' }}
         run: sudo apt-get install zip -y
 
       - name: 🔐 Configurar credenciais da AWS
@@ -46,7 +47,6 @@ jobs:
           echo "Executando Makefile com comando: ${{ github.event.inputs.make_target }}"
           make ${{ github.event.inputs.make_target }}
 
-
       - name: 🧹 Destruir ambiente de teste (se ativado)
-        if: ${{ github.event.inputs.DESTROY_AFTER == 'true' }}
+        if: ${{ github.event.inputs.make_target != 'destroy' && github.event.inputs.DESTROY_AFTER == 'true' }}
         run: make destroy
