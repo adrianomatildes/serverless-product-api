@@ -1,0 +1,43 @@
+name: Deploy Serverless Product API
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Deploy stack via Makefile
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      STACK_NAME: ${{ vars.STACK_NAME }}
+      BUCKET_NAME: ${{ vars.BUCKET_NAME }}
+      PROJECT_NAME: ${{ vars.PROJECT_NAME }}
+      ZIP_NAME: ${{ vars.ZIP_NAME }}
+      TEMPLATE_PATH: ${{ vars.TEMPLATE_PATH }}
+      FUNCTION_DIR: ${{ vars.FUNCTION_DIR }}
+      DESTROY_AFTER: false  # Pode ser alterado em tempo de execução ou via variável
+
+    steps:
+      - name: 📥 Checkout código-fonte
+        uses: actions/checkout@v4
+
+      - name: 📦 Instalar zip (caso necessário)
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: 🔐 Configurar credenciais da AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 🏗️ Executar Makefile (all)
+        run: make
+
+      - name: 🧹 Destruir ambiente de teste (se ativado)
+        if: env.DESTROY_AFTER == 'true'
+        run: make destroy
