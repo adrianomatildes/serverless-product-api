@@ -1,0 +1,33 @@
+/* src/components/ProductList.css */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: scale(1.02);
+  background-color: #f0f0f0;
+}
+
+.product-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.product-card p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
