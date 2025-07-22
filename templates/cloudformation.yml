@@ -44,7 +44,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - dynamodb:PutItem
-                  - dynamodb:Scan                # ← Adiciona essa linha
+                  - dynamodb:Scan
                 Resource: !GetAtt ProductDynamoTable.Arn
               - Effect: Allow
                 Action:
@@ -84,7 +84,7 @@ Resources:
       ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
       PathPart: produtos
 
-  ApiGatewayMethod:
+  ApiGatewayPostMethod:
     Type: AWS::ApiGateway::Method
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
@@ -98,6 +98,19 @@ Resources:
           - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaArn}/invocations
           - LambdaArn: !GetAtt CreateProductFunction.Arn
 
+  ApiGatewayGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      ResourceId: !Ref ApiGatewayResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaArn}/invocations
+          - LambdaArn: !GetAtt CreateProductFunction.Arn
 
   ApiGatewayOptionsMethod:
     Type: AWS::ApiGateway::Method
@@ -115,7 +128,7 @@ Resources:
             ResponseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
-              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST,GET'"
             ResponseTemplates:
               application/json: ''
       MethodResponses:
@@ -124,17 +137,16 @@ Resources:
             method.response.header.Access-Control-Allow-Headers: true
             method.response.header.Access-Control-Allow-Origin: true
             method.response.header.Access-Control-Allow-Methods: true
-  
+
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
-    DependsOn: 
-      - ApiGatewayMethod
+    DependsOn:
+      - ApiGatewayPostMethod
+      - ApiGatewayGetMethod
       - ApiGatewayOptionsMethod
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
       StageName: dev
-
-
 
   LambdaApiPermission:
     Type: AWS::Lambda::Permission
@@ -143,9 +155,8 @@ Resources:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub
-        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApiId}/*/POST/produtos
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApiId}/*/*/produtos
         - RestApiId: !Ref ApiGatewayRestApi
-
 
 Outputs:
   ApiUrl:
