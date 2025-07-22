@@ -67,8 +67,9 @@ make DESTROY_AFTER=true
 
 ## 📸 Imagem da Interface
 
-![Preview da Interface](assets/interface-preview.png)
-
+<p align="center">
+  <img src="assets/interface-preview.png" alt="Preview da Interface" width="600"/>
+</p>
 ---
 
 ## 💡 Como isso ajuda DevOps Engineers?
