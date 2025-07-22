@@ -25,7 +25,7 @@ export default function ProductForm({ onProdutoCadastrado }) {
 
     try {
       // API URL
-      const response = await fetch('https://dzt0khrbil.execute-api.us-east-1.amazonaws.com/dev/produtos', {
+      const response = await fetch('https://d0ksuoizb8.execute-api.us-east-1.amazonaws.com/dev/produtos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
