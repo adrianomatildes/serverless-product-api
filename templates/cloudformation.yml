@@ -44,6 +44,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - dynamodb:PutItem
+                  - dynamodb:Scan                # ← Adiciona essa linha
                 Resource: !GetAtt ProductDynamoTable.Arn
               - Effect: Allow
                 Action:
@@ -55,8 +56,6 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: "*"
-
-
 
   CreateProductFunction:
     Type: AWS::Lambda::Function

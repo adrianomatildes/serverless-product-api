@@ -9,7 +9,7 @@ export default function App() {
   const carregarProdutos = async () => {
     try {
       // API URL
-      const response = await fetch('https://4sq6828dsh.execute-api.us-east-1.amazonaws.com/dev/produtos')
+      const response = await fetch('https://iwpgardx2b.execute-api.us-east-1.amazonaws.com/dev')
       if (!response.ok) throw new Error('Erro ao buscar produtos')
       const data = await response.json()
       setProdutos(data)
