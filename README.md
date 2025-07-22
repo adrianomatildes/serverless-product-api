@@ -1,10 +1,24 @@
 # 📦 Serverless Product API
 
-API para cadastro de produtos utilizando AWS Lambda, API Gateway, DynamoDB e S3. Automação via Makefile + CI/CD com GitHub Actions.
+API Serverless para cadastro de produtos com imagens, utilizando **AWS Lambda**, **API Gateway**, **DynamoDB** e **S3**, com automação completa via **Makefile** e **GitHub Actions**.
 
 ---
 
-## ⚙️ Makefile (DevMate Style)
+## 🧠 Visão Geral
+
+Este projeto demonstra uma arquitetura moderna e escalável para microsserviços serverless. Ele abrange:
+
+- Backend com Lambda Functions (Python)
+- API REST com API Gateway
+- Banco de dados NoSQL com DynamoDB
+- Armazenamento de arquivos com S3 (público controlado)
+- Deploy automatizado com Makefile
+- Pipeline CI/CD usando GitHub Actions
+- Frontend HTML simples embutido para testes rápidos
+
+---
+
+## ⚙️ Makefile (Automação Estilo DevMate)
 
 | Comando             | Ação executada                                         |
 |---------------------|--------------------------------------------------------|
@@ -17,30 +31,56 @@ API para cadastro de produtos utilizando AWS Lambda, API Gateway, DynamoDB e S3.
 
 ---
 
-## 🚀 CI/CD via GitHub Actions
+## 🚀 CI/CD com GitHub Actions
 
-### 🔧 Variáveis e Secrets usados
+### 🔐 Secrets Utilizados
 
-- **Secrets**
-  - `AWS_ACCESS_KEY_ID`
-  - `AWS_SECRET_ACCESS_KEY`
-  - `AWS_REGION`
-- **Variables**
-  - `STACK_NAME`, `BUCKET_NAME`, `ZIP_NAME`, `PROJECT_NAME`, `FUNCTION_DIR`, `TEMPLATE_PATH`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
 
-### 🔘 Execução manual (workflow_dispatch)
+### 📦 Variáveis do Ambiente
 
-Você pode rodar a pipeline manualmente no GitHub (Aba **Actions → Deploy stack via Makefile → Run workflow**):
+- `STACK_NAME`, `BUCKET_NAME`, `ZIP_NAME`, `PROJECT_NAME`, `FUNCTION_DIR`, `TEMPLATE_PATH`
+
+### 🔘 Execução Manual via Workflow Dispatch
+
+A pipeline pode ser executada diretamente pela interface do GitHub:
 
 **Inputs:**
-- `make_target`: comando do Makefile a ser executado (`all`, `package`, `deploy`, `test`, `destroy`)
-- `DESTROY_AFTER`: `true` para destruir o ambiente ao final (usado para testes temporários)
+
+| Input         | Descrição                                              |
+|---------------|--------------------------------------------------------|
+| `make_target` | Comando Make a ser executado (`all`, `deploy`, etc.)   |
+| `DESTROY_AFTER` | `true` para destruir o ambiente ao final (opcional) |
 
 ---
 
-## 🧪 Exemplo de uso interativo
-
-Para fazer um deploy temporário e destruir ao final:
+## 🧪 Exemplo de Uso Interativo
 
 ```bash
+# Faz deploy completo e destrói a stack após o teste
 make DESTROY_AFTER=true
+```
+
+---
+
+## 📸 Imagem da Interface
+
+![Preview](docs/architecture.png)
+
+---
+
+## 💡 Como isso ajuda DevOps Engineers?
+
+- Demonstra habilidade com infraestrutura como código (IaC)
+- Prova domínio da AWS em modelo pay-per-use (Lambda, API Gateway, DynamoDB, S3)
+- Automatiza ciclo de vida completo com Make + GitHub Actions
+- Facilita reusabilidade em ambientes de dev/test/produção
+
+---
+
+## 👤 Autor
+
+Adriano Matildes — DevOps Engineer | GitOps | Cloud | IaC | Observability  
+[LinkedIn](https://linkedin.com/in/adrianomatildes) • [GitHub](https://github.com/adrianomatildes)
