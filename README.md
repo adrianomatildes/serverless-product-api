@@ -61,3 +61,26 @@ A pipeline pode ser executada diretamente pela interface do GitHub:
 ```bash
 # Faz deploy completo e destrói a stack após o teste
 make DESTROY_AFTER=true
+```
+
+---
+
+## 📸 Imagem da Interface
+
+![Preview](docs/architecture.png)
+
+---
+
+## 💡 Como isso ajuda DevOps Engineers?
+
+- Demonstra habilidade com infraestrutura como código (IaC)
+- Prova domínio da AWS em modelo pay-per-use (Lambda, API Gateway, DynamoDB, S3)
+- Automatiza ciclo de vida completo com Make + GitHub Actions
+- Facilita reusabilidade em ambientes de dev/test/produção
+
+---
+
+## 👤 Autor
+
+Adriano Matildes — DevOps Engineer | GitOps | Cloud | IaC | Observability  
+[LinkedIn](https://linkedin.com/in/adrianomatildes) • [GitHub](https://github.com/adrianomatildes)
