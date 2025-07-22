@@ -67,7 +67,7 @@ make DESTROY_AFTER=true
 
 ## 📸 Imagem da Interface
 
-![Preview](docs/architecture.png)
+![Preview da Interface](assets/interface-preview.png)
 
 ---
 
